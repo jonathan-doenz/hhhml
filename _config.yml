@@ -3,7 +3,7 @@ title:               Less Data, Same Happiness
 tagline:             'An extended analysis'
 description:         'An extension of the paper <a href="https://www.aeaweb.org/articles?id=10.1257/pol.1.1.75" target="_blank">Housing, Health, & Happiness (2009)</a>'
 url:                 https://danieljsmarda.github.io
-baseurl:             '/housinghealthml'
+baseurl:             
 paginate:            5
 permalink:           pretty
 
