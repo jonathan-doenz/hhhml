@@ -19,4 +19,5 @@ plugins:
 
 # Custom vars
 version:             1.1.0
+github-ml-repo:      https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters
 google_analytics_id: #UA-XXXX-Y
