@@ -2,7 +2,7 @@
 layout: page
 title: This is the about page
 ---
-
+{% include figures/taskb_result_heatmap.html %}
 <p class="message">
   Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
 </p>
