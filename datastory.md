@@ -3,11 +3,15 @@ layout: page
 title: Datastory
 ---
 
+
+
 If you are reading this and you are unfamiliar with the [Housing, Health & Happiness (2009) paper](https://www.aeaweb.org/articles?id=10.1257/pol.1.1.75), here's the paper's abstract:
 
 >We investigate the impact of a large-scale Mexican program to replace dirt floors with cement floors on child health and adult happiness. We find that replacing dirt floors with cement significantly improves the health of young children measured by decreases in the incidence of parasitic infestations, diarrhea, and the prevalence of anemia, and an improvement in children's cognitive development. Additionally, we find significant improvements in adult welfare measured by increased satisfaction with their housing and quality of life, as well as by lower scores on depression and perceived stress scales.
 
-The authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on a several regressor variables. For copyright purposes we can't link to the main paper, but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
+The authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on a several regressor variables. For copyright purposes we can't link to the main paper, 
+
+but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
 
 From a high level, we determined that the paper thoroughly analyses the data provided and rigorously shows using linear regressors that the implementation of the Piso Firme program had a statistically significant impact on the dependent variables shown. We aim to extend this analysis in two distinct ways. First, we use classifiers and the associated feature importances to further confirm or reject the conclusions found by the original authors' regression analyses. Second, we aim to build regressors that predicts the features collected in the 2005 survey that most generalizeable to other areas of public policy. Importantly, we aim to build these regressors using only features from the 2000 census. The ability to successfully derive the survey features from the census data would indicate that executing the 2005 survey was not necessary, and that time and funding allotted to similar future public policy surveys could be saved.
 
@@ -15,11 +19,10 @@ Put concretely, we aim to answer the following 2 research questions:
 1.  **[Task A]** Do Machine Learning-based classification approaches find similar positive treatment effects as the regression analyses of the paper? In other words, do we reach the same conclusions as the researchers if we try to classify households as `treatment` or `control` based on the dependent variables?
 2.  **[Task B]** Is it possible to predict the most important variables from the 2005 survey using only data from the 2000 census?
 
-
 # Task A
 
 Our task A consists in two main goals:
-1. Compare the predictive performances of the different _outcome variables_ specified in Tables 4 and 6 of the paper to predict whether a household is from the treatment of control group.
+- 1.Compare the predictive performances of the different _outcome variables_ specified in Tables 4 and 6 of the paper to predict whether a household is from the treatment of control group.
 
 To achieve this, we first build a baseline model that only includes control variables, i.e. features from the 2000 census, and features from the 2005 survey that are used either in their regression model 3 or as robustness checks in Table 7 of the paper. 
 50 such features were selected.
@@ -31,7 +34,7 @@ Then we construct a model for each _outcome variable_, i.e. a model that include
 In the paper, the intention-to-treat variable is shown to be important to predict the outcome variables, hence we expect that including an outcome variable in the model should improve our predictions of the intention-to-treat variable. 
 As you will see, we could not observe such an effect because the baseline predictions were already perfect.
 
-2. Compare the feature importances of the _outcome variables_ with the regression coefficients from the paper
+- 2.Compare the feature importances of the _outcome variables_ with the regression coefficients from the paper
 
 To achieve this, we perform a feature importance analysis on the models explained above and obtain an importance score for each outcome variable.
 Then we compare first qualitatively the importance ranking of the outcome variables using our importance scores with the ranking based on the paper's regression coefficients.
@@ -74,19 +77,13 @@ Let's look at the distribution of all the most important features reported in th
 We see that the distribution for the treatment and control groups are indeed relatively different for these features.
 It is remarkable that our classifiers are able to take advantage of these differences to such an extent as to perfectly predict the treatment/control labels on a held-out test set.
 
-## Comparison of our feature importances with their _intention-to-treatment_ coefficients
+## Comparison of our feature importances with their _intention-to-treat_ coefficients
 
 We now compare the feature importances of the outcome variables obtained in the present task, with the coefficients of the _intention-to-treat_ variable that the authors obtain in their regression analyses.
 
 We expect that our feature importances should loosely agree with their coefficients, meaning that the extent to which the _intention-to-treat_ variable is linearly related to a variable is proportional to the importance of this variable to predict the _intention-to-treat_ variable.
 
 We will use the feature importances from the logistic regression because they range over positive as well as negative values, contrarily to the feature importance scores from random forest and XGBoost classifiers.
-
-**Table caption:**
-
-Features rankings.
-The left-most column shows the features ranked by their paper's coefficients. The second column shows the value of the coefficient.
-The two right-most columns show the features ranked by their feature importance scores that we computed above, and the value of the scores.
 
 {% include figures/coef_and_importance_comparison_barplot.html %}
 
@@ -102,6 +99,8 @@ We also note that the sign of the coefficients agree with the sign of the featur
 We conclude that our feature importance scores agree qualitatively with the coefficients from the paper's regressions.
 
 Here we show the paper's coefficients transformed in the range \[0, 1\], along with the importance scores that we obtained for the same features and transformed in the same way.
+
+{% include figures/coef_and_importance_comparison_barplot.html %}
 
 **Observations:**
 - The scores are almost the same for 3 of the cement related features (`S_cementfloorbed`, `S_cementfloorkit`, `S_cementfloordin`) and for `S_cesds`, the depression score.
