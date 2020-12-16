@@ -114,12 +114,12 @@ Here we show the paper's coefficients transformed in the range \[0, 1\], along w
 We predict the different 2005 survey values from the census data from 2000. We calculate and report the $$R^2$$ scores for the different targets of the survey data and the different models.
 We use the following models:
 - Linear models
-    - Linear regression: A simple linear regression is always a good baseline to see how the more advance machine learning techniques perform compared to the linear regressor.
-    - Ridge regression: The Ridge regression use a L2 regularization term that penalizes the size of the coefficients and 'shrinks' these coefficients. Therefore, the model becomes more robust to collinearity.
+    - [Linear regression](https://en.wikipedia.org/wiki/Linear_regression): A simple linear regression is always a good baseline to see how the more advance machine learning techniques perform compared to the linear regressor.
+    - [Ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization): The Ridge regression use a L2 regularization term that penalizes the size of the coefficients and 'shrinks' these coefficients. Therefore, the model becomes more robust to collinearity.
 - Non-linear models
-    - DecisionTreeRegressor: A decision tree is build from the data and can have a very high depth.
-    - GradientBoostingRegressor: Builds a certain number of weak learners (decsion trees with a shallow depth) and combine these in order to have a strong prediction. 
-    - MLPRegressor: The multi-layer perceptron is a fully connected neural network that is able to build complex non linear models.
+    - [DecisionTreeRegressor](https://en.wikipedia.org/wiki/Decision_tree_learning): A decision tree is build from the data and can have a very high depth.
+    - [GradientBoostingRegressor](https://en.wikipedia.org/wiki/Gradient_boosting): Builds a certain number of weak learners (decsion trees with a shallow depth) and combine these in order to have a strong prediction. 
+    - [MLPRegressor](https://en.wikipedia.org/wiki/Multilayer_perceptron): The multi-layer perceptron is a fully connected neural network that is able to build complex non linear models.
 
 We calculate the $$R^2$$ score with a standardized and non-standardized dataset. Different algorithms improve in performance when standardizing and others have in general no need for standardization like the Gradient Boosting Regressor. We will see how the different algorithms behave in the following heatmap. 
 
