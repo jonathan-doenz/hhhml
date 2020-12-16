@@ -6,6 +6,10 @@ url:                 https://danieljsmarda.github.io
 baseurl:             
 paginate:            5
 permalink:           pretty
+markdown:            kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
 
 # About/contact
 author:
