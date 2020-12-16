@@ -7,9 +7,7 @@ If you are reading this and you are unfamiliar with the [Housing, Health & Happi
 
 >We investigate the impact of a large-scale Mexican program to replace dirt floors with cement floors on child health and adult happiness. We find that replacing dirt floors with cement significantly improves the health of young children measured by decreases in the incidence of parasitic infestations, diarrhea, and the prevalence of anemia, and an improvement in children's cognitive development. Additionally, we find significant improvements in adult welfare measured by increased satisfaction with their housing and quality of life, as well as by lower scores on depression and perceived stress scales.
 
-The authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on a several regressor variables. For copyright purposes we can't link to the main paper, 
-
-but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
+The authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on several regressor variables. For copyright purposes we can't link to the main paper, but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
 
 From a high level, we determined that the paper thoroughly analyses the data provided and rigorously shows using linear regressors that the implementation of the Piso Firme program had a statistically significant impact on the dependent variables shown. We aim to extend this analysis in two distinct ways. First, we use classifiers and the associated feature importances to further confirm or reject the conclusions found by the original authors' regression analyses. Second, we aim to build regressors that predicts the features collected in the 2005 survey that most generalizeable to other areas of public policy. Importantly, we aim to build these regressors using only features from the 2000 census. The ability to successfully derive the survey features from the census data would indicate that executing the 2005 survey was not necessary, and that time and funding allotted to similar future public policy surveys could be saved.
 
@@ -172,6 +170,19 @@ We will only consider the second subplot based on the permutation importances fo
 We can again hypothezise why these two values are the most important ones:
 - We could not come up with an intuitive explaination for the importance of the `C_waterland` variable.
 - If a lot of people live in a certain area, the government might turn its attention more easily towards these households. Therefore, they might have higher probabilities of profiting from such a program. 
+
+### S_cementfloordin and S_cementfloorkit
+**Definition: Cement floor in dining room and in the kitchen**
+We will treat both predictions in this subsection because we find it interesting to compare the results for both. 
+
+{% include figures/taskb_AUC_curve_S_cementfloordin.html %}
+{% include figures/taskb_AUC_curve_S_cementfloorkit.html %}
+
+The Area Under ROC curve is 0.722 and 0.710, respectively: Both predictions are acceptable and there quality is quite similar.
+
+`S_cementfloordin` does not really have features that are much more important than other when we consider the permutation importance scores. So an analysis is rather difficult. For `S_cementfloorkit`, we have `C_HHdirtfloor` and a little less important `C_refrigerator`. We hypothezise:
+-`C_HHdirtfloor`: We don't really know why this feature would be more important particularly to predict the presence of cement floor in the kitchen. By the little analysis just above, we could show that often the kitchen is one of the last rooms that gets a concrete floor. Therefore, the information what proportion of dirtfloors are in the households might be particularly important.
+-`C_refrigerator`: This value seems to influence the prediction also in a meaningful way. this might make sense, because the presence of a refrigerator might indicate if a kitchen is often used and how the hygienic standards are in this particular household. If the kitchen is often used and standards are high, the investment in a concrete floor is more probable.
 # Conclusions
 
 In determining whether machine learning techniques strengthen or weaken the original authors' hypothesis, we conclude that our feature importance scores agree to some extent quantitatively with the original paper coefficients. But, we advise not to rely too much on them, and rather only use the qualitative information of the ranking, which is probably more robust.
