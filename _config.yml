@@ -6,6 +6,7 @@ url:                 https://danieljsmarda.github.io
 baseurl:             
 paginate:            5
 permalink:           pretty
+encoding:            utf-8
 markdown:            kramdown
 kramdown:
   input: GFM
