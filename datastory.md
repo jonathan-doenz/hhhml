@@ -7,15 +7,15 @@ If you are reading this and you are unfamiliar with the [Housing, Health & Happi
 
 >We investigate the impact of a large-scale Mexican program to replace dirt floors with cement floors on child health and adult happiness. We find that replacing dirt floors with cement significantly improves the health of young children measured by decreases in the incidence of parasitic infestations, diarrhea, and the prevalence of anemia, and an improvement in children's cognitive development. Additionally, we find significant improvements in adult welfare measured by increased satisfaction with their housing and quality of life, as well as by lower scores on depression and perceived stress scales.
 
-The authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on several regressor variables. For copyright purposes we can't link to the main paper, but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
+In a nutshell, the authors found two neighboring cities in Mexico that formed a single metropolitan area. This area was divided aministratively, so they had a single area with very similar demographic attributes differing, where (by law) only half of the residents were part of the program. They split the households into clusters using data from a **2000 census**. Then, in **2005**, the authors **surveyed** these households about a variety of welfare and happiness indicators. Finally, the authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on several regressor variables. For copyright purposes we can't link to the main paper, but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
 
-From a high level, we determined that the paper thoroughly analyses the data provided and rigorously shows using linear regressors that the implementation of the Piso Firme program had a statistically significant impact on the dependent variables shown. We aim to extend this analysis in two distinct ways. First, we use classifiers and the associated feature importances to further confirm or reject the conclusions found by the original authors' regression analyses. Second, we aim to build regressors that predicts the features collected in the 2005 survey that most generalizeable to other areas of public policy. Importantly, we aim to build these regressors using only features from the 2000 census. The ability to successfully derive the survey features from the census data would indicate that executing the 2005 survey was not necessary, and that time and funding allotted to similar future public policy surveys could be saved.
+From a high level, we determined that the paper thoroughly analyses the data provided and rigorously shows using linear regressors that the implementation of the Piso Firme program had a statistically significant impact on the dependent variables shown. We aim to extend this analysis in two distinct ways. First, we use classifiers and the associated feature importances to further confirm or reject the conclusions found by the original authors' regression analyses. Second, we aim to build regressors that predicts the features collected in the 2005 survey that most generalizeable to other areas of public policy. Importantly, we aimed to build these regressors *using only features from the 2000 census*. The ability to successfully derive the survey features from the census data would indicate that executing the 2005 survey was not necessary, and that time and funding allotted to similar future public policy surveys could be saved.
 
-Put concretely, we aim to answer the following 2 research questions:
+Put concretely, we aimed to answer the following 2 research questions:
 1.  **[Task A]** Do Machine Learning-based classification approaches find similar positive treatment effects as the regression analyses of the paper? In other words, do we reach the same conclusions as the researchers if we try to classify households as `treatment` or `control` based on the dependent variables?
 2.  **[Task B]** Is it possible to predict the most important variables from the 2005 survey using only data from the 2000 census?
 
-Here's a table of contents for the rest of the article:
+Here's a table of contents for the rest of this article:
 * TOC
 {:toc}
 
@@ -77,7 +77,7 @@ Let's look at the distribution of all the most important features reported in th
 We see that the distribution for the treatment and control groups are indeed relatively different for these features.
 It is remarkable that our classifiers are able to take advantage of these differences to such an extent as to perfectly predict the treatment/control labels on a held-out test set.
 
-## Comparison of our feature importances with their _intention-to-treat_ coefficients
+## Comparison of our feature importances with original _intention-to-treat_ coefficients
 
 We now compare the feature importances of the outcome variables obtained in the present task, with the coefficients of the _intention-to-treat_ variable that the authors obtain in their regression analyses.
 
