@@ -23,7 +23,7 @@ Here's a table of contents for the rest of this article:
 
 # Task A
 
-Our task A consists in two main goals:
+Our task A consists of two main goals:
 - 1.Compare the predictive performances of the different _outcome variables_ specified in Tables 4 and 6 of the paper to predict whether a household is from the treatment of control group.
 
 To achieve this, we first build a baseline model that only includes control variables, i.e. features from the 2000 census, and features from the 2005 survey that are used either in their regression model 3 or as robustness checks in Table 7 of the paper. 
