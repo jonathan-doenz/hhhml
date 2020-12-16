@@ -142,6 +142,7 @@ In the following, we will focus on the selected variables and analyse if we can 
 
 ### S_garbage
 *Definition: This is a binary variable that tells us if this households have access to garbage collection service.*
+
 This is a binary value, which tells us if we use garbage collection. In this case, we can use a classification algorithm and see how easily we can predict this value. Most of the households dispose of garbage collection, therefore we should not use the naive accuracy score to judge the quality of our prediction. The naive prediction of saying that we predict that all the households have garbage collection leads to an accuracy score of $$\frac{1617}{1617+336}\ =\ 0.830$$. This score would give the impression that our predictions is good even if it does not provide is any additional information. In order to better judge the quality of the predictor, we will plot the Receiver Operating Characteristic (ROC) curve and provide the Area Under Plot (AUC) score. The ROC curve is able to illustrate the quality of a predictor by ploting the False positive rate ($$\text{FP rate} = \frac{\text{FP}}{\text{FP}+\text{TN}}$$, $$\text{TP rate} = \frac{\text{TP}}{\text{FP}+\text{FN}}$$) against the True positive rate for different threshold levels. The AUC score summarizes this plot in a meaningful way by calculating the area under this curve. The closer it is to 1, the better the prediction is. A score of 0.5 means, that the performance of the regressor is randomly guessing.
 
 {% include figures/taskb_AUC_curve_S_garbage.html %}.
@@ -172,7 +173,8 @@ We can again hypothezise why these two values are the most important ones:
 - If a lot of people live in a certain area, the government might turn its attention more easily towards these households. Therefore, they might have higher probabilities of profiting from such a program. 
 
 ### S_cementfloordin and S_cementfloorkit
-**Definition: Cement floor in dining room and in the kitchen**
+*Definition: Cement floor in dining room and in the kitchen.*
+
 We will treat both predictions in this subsection because we find it interesting to compare the results for both. 
 
 {% include figures/taskb_AUC_curve_S_cementfloordin.html %}
@@ -180,9 +182,14 @@ We will treat both predictions in this subsection because we find it interesting
 
 The Area Under ROC curve is 0.722 and 0.710, respectively: Both predictions are acceptable and there quality is quite similar.
 
-`S_cementfloordin` does not really have features that are much more important than other when we consider the permutation importance scores. So an analysis is rather difficult. For `S_cementfloorkit`, we have `C_HHdirtfloor` and a little less important `C_refrigerator`. We hypothezise:
--`C_HHdirtfloor`: We don't really know why this feature would be more important particularly to predict the presence of cement floor in the kitchen. By the little analysis just above, we could show that often the kitchen is one of the last rooms that gets a concrete floor. Therefore, the information what proportion of dirtfloors are in the households might be particularly important.
--`C_refrigerator`: This value seems to influence the prediction also in a meaningful way. this might make sense, because the presence of a refrigerator might indicate if a kitchen is often used and how the hygienic standards are in this particular household. If the kitchen is often used and standards are high, the investment in a concrete floor is more probable.
+`S_cementfloordin` does not really have features that are much more important than other when we consider the permutation importance scores. So an analysis is rather difficult. For `S_cementfloorkit`, we have `C_HHdirtfloor` and a little less important `C_refrigerator`. We hypothesize:
+- `C_HHdirtfloor`: We don't really know why this feature would be more important particularly to predict the presence of cement floor in the kitchen. By the little analysis just above, we could show that often the kitchen is one of the last rooms that gets a concrete floor. Therefore, the information what proportion of dirtfloors are in the households might be particularly important.
+- `C_refrigerator`: This value seems to influence the prediction also in a meaningful way. this might make sense, because the presence of a refrigerator might indicate if a kitchen is often used and how the hygienic standards are in this particular household. If the kitchen is often used and standards are high, the investment in a concrete floor is more probable.
+
+### S_shcementfloor
+*Definition: Share of rooms with cement floors.*
+
+This is a continuous variable, so we use regression to attempt to predict the value. Using a sklearn `GradientBoostingRegressor`, we were only able to achieve an $$R^2$$ value of 0.103.  From census data it seems to be difficult to infer the proportion of concrete floors 5 years later.
 # Conclusions
 
 In determining whether machine learning techniques strengthen or weaken the original authors' hypothesis, we conclude that our feature importance scores agree to some extent quantitatively with the original paper coefficients. But, we advise not to rely too much on them, and rather only use the qualitative information of the ranking, which is probably more robust.
