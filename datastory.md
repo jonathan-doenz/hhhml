@@ -3,8 +3,6 @@ layout: page
 title: Datastory
 ---
 
-
-
 If you are reading this and you are unfamiliar with the [Housing, Health & Happiness (2009) paper](https://www.aeaweb.org/articles?id=10.1257/pol.1.1.75), here's the paper's abstract:
 
 >We investigate the impact of a large-scale Mexican program to replace dirt floors with cement floors on child health and adult happiness. We find that replacing dirt floors with cement significantly improves the health of young children measured by decreases in the incidence of parasitic infestations, diarrhea, and the prevalence of anemia, and an improvement in children's cognitive development. Additionally, we find significant improvements in adult welfare measured by increased satisfaction with their housing and quality of life, as well as by lower scores on depression and perceived stress scales.
@@ -18,6 +16,10 @@ From a high level, we determined that the paper thoroughly analyses the data pro
 Put concretely, we aim to answer the following 2 research questions:
 1.  **[Task A]** Do Machine Learning-based classification approaches find similar positive treatment effects as the regression analyses of the paper? In other words, do we reach the same conclusions as the researchers if we try to classify households as `treatment` or `control` based on the dependent variables?
 2.  **[Task B]** Is it possible to predict the most important variables from the 2005 survey using only data from the 2000 census?
+
+Here's a table of contents for the rest of the article:
+* TOC
+{:toc}
 
 # Task A
 
@@ -107,12 +109,9 @@ Here we show the paper's coefficients transformed in the range \[0, 1\], along w
 - `S_cementfloorbat`, `S_shcementfloor`, `S_satisfloor` have similar values in terms of the paper coefficients, and also in terms of the feature importance scores. But they all are considered relatively less important by the feature importance scores compared to the paper coefficients.
 - The feature for which the two scores differ the most (on a relative scale) is `S_pss`, which represents the perceived stress of the mother of the households.
 
-We conclude that our feature importance scores agree to some extent quantitatively with the paper coefficients. 
-But we advise not to rely too much on them, and rather only use the qualitative information of the ranking, which is probably more robust.
-
 # Task B
-We predict the different survey values from the census data from 2000. We create a data array of the results for the different models. We calculate and report the $$R^2$$ scores for the different targets of the survey data and the different models.
-We use the different models:
+We predict the different 2005 survey values from the census data from 2000. We calculate and report the $$R^2$$ scores for the different targets of the survey data and the different models.
+We use the following models:
 - Linear models
     - Linear regression: A simple linear regression is always a good baseline to see how the more advance machine learning techniques perform compared to the linear regressor.
     - Ridge regression: The Ridge regression use a L2 regularization term that penalizes the size of the coefficients and 'shrinks' these coefficients. Therefore, the model becomes more robust to collinearity.
@@ -121,11 +120,13 @@ We use the different models:
     - GradientBoostingRegressor: Builds a certain number of weak learners (decsion trees with a shallow depth) and combine these in order to have a strong prediction. 
     - MLPRegressor: The multi-layer perceptron is a fully connected neural network that is able to build complex non linear models.
 
-We calculate the $$R^2$$ score with a standardized and non-standardized dataset. Different algorithms improve in performance when standardizing and others have in general no need for standardization like the Gradient Boosting Regressor. We will see how the different algorithms behave in the following.
+We calculate the $$R^2$$ score with a standardized and non-standardized dataset. Different algorithms improve in performance when standardizing and others have in general no need for standardization like the Gradient Boosting Regressor. We will see how the different algorithms behave in the following heatmap. 
+
+Each row corresponds to a different algorithm, and each column corresponds to the dependent variable of the regression. Lighter colors indicate a regressor's ability to successfully predict the corresponding variable.
 
 {% include figures/taskb_R2_scores_heatmap.html %}
 
-When we compare the results  between the different average performances of our five regressors, we notice that the overall performance of all the regressors are not very good. The Linear and Ridge Regressor seem to have the best performance than the non-linear regressor. This is mostly explained by the fact that they don't have a very bad performance on variables that are difficult to predict. The non-linear techniques perform far better than the non-linear ones on some variables, where a good prediction seems  to be feasible. We will in the following analysis focus on the variables for which we can make a meaningful prediction and compare the different models for these. 
+When we compare the results between the different average performances of our five regressors, we notice that the overall performance of all the regressors are not very good. The Linear and Ridge Regressor seem to have better performance than the non-linear regressors. This is mostly explained by the fact that they don't have a very bad performance on variables that are difficult to predict. The linear techniques perform far better than the non-linear ones on some variables, where a good prediction seems  to be feasible. We will in the following analysis focus on the variables for which we can make a meaningful prediction and compare the different models for these. 
 
 {% include figures/taskb_mean_r2_performance_all_predictions.html %}
 
@@ -140,5 +141,25 @@ This plot offers a very different picture on the performance of the different re
 ## Analysis for the selected variables
 In the following, we will focus on the selected variables and analyse if we can predict them from the census data from 2000. We will use the Gradient Bosting Regressor as its overall performance was the best. We will also analyse what features are the most important in the prediction of the variable. We will plot the feature importances for the different predictions. We still need to be careful with high cardinality features of the impurity-based feature importance scores (high cardinality tends to have a higher feature importance score). Moreover, the impurity-based feature importance score will not be meaningful if we have correlated features. One correlated feature might have a very high score while the other one is very small. Therefore, we use the permutation feature score on test data to reanalyse the feature importances. The idea of the permutation feature score is to test the influence of a feature immediatly on the model. For unimportant features, the have little effects on the predictive power of the model and the permutation of important feature should have a big negative influence on the predictive power. (Source: We have used some explainations from [datadive](https://blog.datadive.net/selecting-good-features-part-iii-random-forests/) and [sklearn](https://scikit-learn.org/stable/modules/permutation_importance.html#permutation-importance)).
 
-## Overall conclusions
-We see that in general the census data from 2000 does not allow us to construct a good model to predict the different features of the survey in 2005. This is not astonishing as the census data has less granularity than the survey data that is specific to every household. The cenus data mostly reports averages over an area that is composed of many households. There are still a few values, where some algorithms are able to make decent predictions. 
+### S_garbage
+*Definition: This is a binary variable that tells us if this households have access to garbage collection service.*
+This is a binary value, which tells us if we use garbage collection. In this case, we can use a classification algorithm and see how easily we can predict this value. Most of the households dispose of garbage collection, therefore we should not use the naive accuracy score to judge the quality of our prediction. The naive prediction of saying that we predict that all the households have garbage collection leads to an accuracy score of $$\frac{1617}{1617+336}\ =\ 0.830$$. This score would give the impression that our predictions is good even if it does not provide is any additional information. In order to better judge the quality of the predictor, we will plot the Receiver Operating Characteristic (ROC) curve and provide the Area Under Plot (AUC) score. The ROC curve is able to illustrate the quality of a predictor by ploting the False positive rate ($$\text{FP rate} = \frac{\text{FP}}{\text{FP}+\text{TN}}$$, $$\text{TP rate} = \frac{\text{TP}}{\text{FP}+\text{FN}}$$) against the True positive rate for different threshold levels. The AUC score summarizes this plot in a meaningful way by calculating the area under this curve. The closer it is to 1, the better the prediction is. A score of 0.5 means, that the performance of the regressor is randomly guessing.
+
+{% include figures/taskb_AUC_curve_S_garbage.html %}.
+
+The Area Under ROC curve is 0.846. Recall that an AUC value of 0.5 corresponds to a random estimator, and an AUC value of 0.1 corresponds to a perfect estimator. Therefore, our model performs in a decent way on this variable and can often predict what households will get garbage collection from the census data. In the following, we will analyse how important the different features were in the prediction.
+
+{% include figures/taskb_feature_importance_S_garbage.html %}
+
+Both plots we produce give a very different picture of the feature importance. Some of the features are important in both plots, but some are also overestimated in the impurity-based feature importance analysis. Examples for features that are overestimated are `C_blocksdirtfloor` and `C_gasheater`. These two variables have a high cardinality of 93 for the `C_blocksdirtfloor` and 109 for `C_gasheater`. 
+
+Good indicators to predict if the household has garbage collection 5 years into the future are `C_poverty` and `C_headeduc`. We can only hypotheszise why these two features are the most important:
+- `C_poverty`: Most of the household that are economically better of have already garbage collection in 2000. Therefore the interesting part is to predict if the poorest of the households will have garbage collection. Government programs might also focus the most on the poorest households. This makes this variable quite important. We need to notice that the confidence interval for this variable is very large.
+- `C_headeduc`: The average number of schooling years of an household might be predictive in a sense that an educated person will know about the importance of garbage collection service for the general hygiene and will also be able to articulate their needs to the institution that takes care of the garbage collection. 
+We are very aware that these kind of hypothesis need to be taken with a grain of salt. The predictions are not very good and tree learners have a tendency of overfitting.
+
+# Conclusions
+
+In determining whether machine learning techniques strengthen or weaken the original authors' hypothesis, we conclude that our feature importance scores agree to some extent quantitatively with the original paper coefficients. But, we advise not to rely too much on them, and rather only use the qualitative information of the ranking, which is probably more robust.
+
+We see that in general the census data from 2000 does not allow us to construct a good model to predict the different features of the survey in 2005. This is not astonishing as the census data has less granularity than the survey data that is specific to every household. The census data mostly reports averages over an area that is composed of many households. There are still a few values, where some algorithms are able to make decent predictions, but overall, our results indicate that in general the 2005 survey data **cannot** be predicted from the 2000 census data.
