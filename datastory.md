@@ -15,6 +15,8 @@ Put concretely, we aimed to answer the following 2 research questions:
 1.  **[Task A]** Do Machine Learning-based classification approaches find similar positive treatment effects as the regression analyses of the paper? In other words, do we reach the same conclusions as the researchers if we try to classify households as `treatment` or `control` based on the dependent variables?
 2.  **[Task B]** Is it possible to predict the most important variables from the 2005 survey using only data from the 2000 census?
 
+As you review the data, note that all variables prefixed with `C_` contain data obtained from the 2000 census, and those prefixed with `S_` contain data obtained in the 2005 survey.
+
 Here's a table of contents for the rest of this article:
 * TOC
 {:toc}
@@ -181,6 +183,9 @@ We will treat both predictions in this subsection because we find it interesting
 {% include figures/taskb_AUC_curve_S_cementfloorkit.html %}
 
 The Area Under ROC curve is 0.722 and 0.710, respectively: Both predictions are acceptable and there quality is quite similar.
+
+{% include figures/taskb_feature_importance_S_cementfloordin.html %}
+{% include figures/taskb_feature_importance_S_cementfloorkit.html %}
 
 `S_cementfloordin` does not really have features that are much more important than other when we consider the permutation importance scores. So an analysis is rather difficult. For `S_cementfloorkit`, we have `C_HHdirtfloor` and a little less important `C_refrigerator`. We hypothesize:
 - `C_HHdirtfloor`: We don't really know why this feature would be more important particularly to predict the presence of cement floor in the kitchen. By the little analysis just above, we could show that often the kitchen is one of the last rooms that gets a concrete floor. Therefore, the information what proportion of dirtfloors are in the households might be particularly important.
