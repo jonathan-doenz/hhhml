@@ -110,6 +110,7 @@ Here we show the paper's coefficients transformed in the range \[0, 1\], along w
 - The feature for which the two scores differ the most (on a relative scale) is `S_pss`, which represents the perceived stress of the mother of the households.
 
 # Task B
+## Survey of Different Algorithms
 We predict the different 2005 survey values from the census data from 2000. We calculate and report the $$R^2$$ scores for the different targets of the survey data and the different models.
 We use the following models:
 - Linear models
@@ -158,6 +159,19 @@ Good indicators to predict if the household has garbage collection 5 years into 
 - `C_headeduc`: The average number of schooling years of an household might be predictive in a sense that an educated person will know about the importance of garbage collection service for the general hygiene and will also be able to articulate their needs to the institution that takes care of the garbage collection. 
 We are very aware that these kind of hypothesis need to be taken with a grain of salt. The predictions are not very good and tree learners have a tendency of overfitting.
 
+### S_instcement
+*Definition: Indicator equal to one if the household reports having installed a cement floor since 2000.*
+
+{% include figures/taskb_AUC_curve_S_instcement.html %}
+
+The Area Under ROC curve is 0.797. Again the predictions of our model are decent. We will turn our focus towards the feature importance of our prediction.
+
+{% include figures/taskb_feature_importance_S_instcement.html %}
+
+We will only consider the second subplot based on the permutation importances for our analysis. `C_waterland` and `C_people` seem to be the greatest predictor if a household will get cement floor in between 2000 and 2005. `C_waterland` is the proportion of household that has no water connection outside the house and `C_people` is the cumulated number of people. 
+We can again hypothezise why these two values are the most important ones:
+- We could not come up with an intuitive explaination for the importance of the `C_waterland` variable.
+- If a lot of people live in a certain area, the government might turn its attention more easily towards these households. Therefore, they might have higher probabilities of profiting from such a program. 
 # Conclusions
 
 In determining whether machine learning techniques strengthen or weaken the original authors' hypothesis, we conclude that our feature importance scores agree to some extent quantitatively with the original paper coefficients. But, we advise not to rely too much on them, and rather only use the qualitative information of the ranking, which is probably more robust.
