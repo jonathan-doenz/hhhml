@@ -3,15 +3,27 @@ layout: page
 title: Datastory
 ---
 
-# Part 1
-# Task A of our creative extension
+If you are reading this and you are unfamiliar with the [Housing, Health & Happiness (2009) paper](https://www.aeaweb.org/articles?id=10.1257/pol.1.1.75), here's the paper's abstract:
+
+>We investigate the impact of a large-scale Mexican program to replace dirt floors with cement floors on child health and adult happiness. We find that replacing dirt floors with cement significantly improves the health of young children measured by decreases in the incidence of parasitic infestations, diarrhea, and the prevalence of anemia, and an improvement in children's cognitive development. Additionally, we find significant improvements in adult welfare measured by increased satisfaction with their housing and quality of life, as well as by lower scores on depression and perceived stress scales.
+
+The authors use least-squares regression techniques to measure the impact of Piso Firme, a government program to replace dirt floors with cement, on a several regressor variables. For copyright purposes we can't link to the main paper, but you can find a description of all of the variables the author's investigated [here](https://github.com/epfl-ada/ada-2020-project-milestone-p3-p3_the-social-impacters/blob/master/README.pdf).
+
+From a high level, we determined that the paper thoroughly analyses the data provided and rigorously shows using linear regressors that the implementation of the Piso Firme program had a statistically significant impact on the dependent variables shown. We aim to extend this analysis in two distinct ways. First, we use classifiers and the associated feature importances to further confirm or reject the conclusions found by the original authors' regression analyses. Second, we aim to build regressors that predicts the features collected in the 2005 survey that most generalizeable to other areas of public policy. Importantly, we aim to build these regressors using only features from the 2000 census. The ability to successfully derive the survey features from the census data would indicate that executing the 2005 survey was not necessary, and that time and funding allotted to similar future public policy surveys could be saved.
+
+Put concretely, we aim to answer the following 2 research questions:
+1.  **[Task A]** Do Machine Learning-based classification approaches find similar positive treatment effects as the regression analyses of the paper? In other words, do we reach the same conclusions as the researchers if we try to classify households as `treatment` or `control` based on the dependent variables?
+2.  **[Task B]** Is it possible to predict the most important variables from the 2005 survey using only data from the 2000 census?
+
+
+# Task A
 
 Our task A consists in two main goals:
 1. Compare the predictive performances of the different _outcome variables_ specified in Tables 4 and 6 of the paper to predict whether a household is from the treatment of control group.
 
 To achieve this, we first build a baseline model that only includes control variables, i.e. features from the 2000 census, and features from the 2005 survey that are used either in their regression model 3 or as robustness checks in Table 7 of the paper. 
 50 such features were selected.
-The task consists in predicting whether an household is from the treatment or control group based on these features. The target feature is therefore the _intention-to-treat_ feature, referred as `dpisofirme` throughout the code.
+The task consists in predicting whether a household is from the treatment or control group based on these features. The target feature is therefore the _intention-to-treat_ feature, referred as `dpisofirme` throughout the code.
 
 Our expectation is that the baseline model should not perform well because the authors provided ample evidences that treatment and control households are well balanced over these control variables. As we will see, our models could actually exploit the differences in these control variables and perform very well on this baseline case.
 
@@ -25,24 +37,17 @@ To achieve this, we perform a feature importance analysis on the models explaine
 Then we compare first qualitatively the importance ranking of the outcome variables using our importance scores with the ranking based on the paper's regression coefficients.
 It turns out that they agree relatively well.
 We then compare them quantitatively and they agree pretty well too.
-
-Reference to the [paper](https://www.aeaweb.org/articles?id=10.1257/pol.1.1.75):
-
-Matias D. Cattaneo, Sebastian Galiani, Paul J. Gertler, Sebastian Martinez, and Rocio Titiunik. Housing, health, and happiness. American Economic Journal: Economic Policy, 1(1):75–105, February 2009.
-
-
 ## Comparison of the predictive performances
 
-**Table caption**:
+{% include figures/classifiers_performances_table.html %}
 
+**Caption for the above table**:
 Prediction performances on the test set.
 The left-most column represents the outcome variable that is included as covariate, besides the control variables. 
 The _baseline_ variable means that only the control variables are included.
 Columns 2 to 4 show the accuracy of each classifier.
 Columns 5 to 7 show the F1-score of each classifier.
 The 3 right-most columns represent the feature importance associated to the feature mentioned in the first column for each classifier.
-
-{% include figures/classifiers_performances_table.html %}
 
 Impressively, the baseline models, i.e. the models that only uses the control variables, achieve perfect prediction accuracy and F1-score on the test set using the random forest and XGBoost classifiers.
 
@@ -106,16 +111,15 @@ Here we show the paper's coefficients transformed in the range \[0, 1\], along w
 We conclude that our feature importance scores agree to some extent quantitatively with the paper coefficients. 
 But we advise not to rely too much on them, and rather only use the qualitative information of the ranking, which is probably more robust.
 
-# Part 2
-## Predict different survey targets
-We predict the different survey values from the census data from 2000. We create a data array of the results for the different models. We calculate and report the $R^2$ scores for the different targets of the survey data and the different models.
+# Task B
+We predict the different survey values from the census data from 2000. We create a data array of the results for the different models. We calculate and report the $$R^2$$ scores for the different targets of the survey data and the different models.
 We use the different models:
 - Linear models
     - Linear regression: A simple linear regression is always a good baseline to see how the more advance machine learning techniques perform compared to the linear regressor.
     - Ridge regression: The Ridge regression use a L2 regularization term that penalizes the size of the coefficients and 'shrinks' these coefficients. Therefore, the model becomes more robust to collinearity.
 - Non-linear models
-    - DecisionTreeRegressor: A decision tree is build from the data and can have a very high depht.
-    - GradientBoostingRegressor: Builds a certain number of weak learners (decsion trees with a shallow depht) and combine these in order to have a strong prediction. 
+    - DecisionTreeRegressor: A decision tree is build from the data and can have a very high depth.
+    - GradientBoostingRegressor: Builds a certain number of weak learners (decsion trees with a shallow depth) and combine these in order to have a strong prediction. 
     - MLPRegressor: The multi-layer perceptron is a fully connected neural network that is able to build complex non linear models.
 
 We calculate the $$R^2$$ score with a standardized and non-standardized dataset. Different algorithms improve in performance when standardizing and others have in general no need for standardization like the Gradient Boosting Regressor. We will see how the different algorithms behave in the following.
@@ -128,7 +132,7 @@ When we compare the results  between the different average performances of our f
 
 We computed the mean $$R^2$$ score for all the variables over all the models and choose the five variables for which we can potentially make a meaningful prediction. 
 
-Let's graph the R^2 score for the different models in a barplot again.
+Let's graph the $$R^2$$ score for the different models in a barplot again.
 
 {% include figures/mean_r2_performance_chosen_predictions.html %}
 
